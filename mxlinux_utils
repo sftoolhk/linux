@@ -1,0 +1,457 @@
+setxkbmap -model abnt2 -layout br -variant abnt2
+amixer sset Master unmute
+amixer sset PCM unmute
+
+amixer sset Master mute
+amixer sset PCM mute
+
+#corrigir dependencias
+Ao tentar fazer isso com o comando rm, recebia a mensagem de que o argumento era muito longo. Então, fui deletando aos poucos. Primeiro os que começavam com a letra "a": 
+
+sudo rm -rf /var/lib/dpkg/info/a.* 
+
+Depois outras letras. E assim por diante. Depois de apagar algumas letras aleatórias como A, X, Y, L, Z..., tentei o comando para limpar tudo: 
+
+sudo rm -rf /var/lib/dpkg/info/*.* 
+
+E funcionou! Limpou. Depois disso, fiz: 
+
+ sudo apt-get clean
+$ sudo apt-get install -f
+$ sudo apt-get update 
+
+sudo dpkg --configure -a
+sudo apt install -f
+sudo apt update
+
+sudo apt-get install python2.7
+Para instalar o Python 3.5, digite em um terminal:
+$ sudo apt-get install python3.5
+(Opcional) Para instalar o gerenciador de pacotes pip, digite em um terminal:
+$ sudo apt-get install python-pip
+
+Compartilhar pasta e acesso rede linux
+smb://<ip>
+
+acessar samba terminal
+
+Network prioridade alterar metric
+nano /etc/network/interfaces
+	
+criar atalho de .sh
+scripts na inicialização
+
+awesome
+spurv
+kodi
+tlog
+hydra
+aide
+qemu
+SABnzbd
+lutris
+
+Hardware
+inxi -Fxz
+lspci
+dmesg | grep -i snd
+
+Audio
+aplay -l
+gedit /etc/asound.confmaç
+
+alsamixer
+alsactl store
+
+alsaconf 
+ou 
+alsamixer
+
+você pode usar o TLP para otimizar a vida útil dela e usar o CPUFreq indicator para controlar o clock do seu processador.
+
+#tunning
+Aumentando os limites do Kernel
+Por default o kernel Linux já vem com algumas configurações com limites restritos, mas é possível extrapolar algumas dessas configurações fazendo com que o sistema operacional se utilize ao máximo o hardware do servidor. Para isso você só precisa editar o arquivo /etc/security/limits.conf com os seguintes parâmetros:
+
+ # número de processos e threads
+   nproc unlimited
+   # número de arquivos abertos
+   nofile 1048576
+   # tamanho de locked-in-memory
+   memlock unlimited
+   # tamanho da memória virtual
+   as unlimited
+   # Tempo de cpu
+   cpu unlimited
+   # Tamanho de arquivo
+   fsize unlimited
+   # Total de memory-locks
+   memlock unlimited
+   # Tamanho da fila de mensageria
+   msgqueue unlimited
+   # Total de locks em threads
+   locks unlimited
+Tunando o Kernel Sysctl
+Este é um outro componente do kernel pelo qual iremos otimizar suas configurações de I/O, redes, swap e escalonamento de processos. Para configurá-lo basta editar o /etc/sysctl.conf com os parâmetros abaixo:
+
+ # Aumentando limite do file descriptor
+   fs.file-max = 100000
+   # Desabilitando memória swap
+   vm.swappiness = 0
+   # Aumentando range de portas do IP local e de conexões
+   net.ipv4.ip_local_port_range = 10000 65000
+   net.core.sormaxconn = 65000
+   # Aumentando buffer de rede TCP
+   # Defina o máximo de 16M (16777216) para redes de 1GB and 32M (33554432) ou 54M (56623104) para redes de 10GB
+   net.core.rmem_max = 16777216
+   net.core.wmem_max = 16777216
+   net.core.rmem_default = 16777216
+   net.core.wmem_default = 16777216
+   net.ipv4.tcp_rmem = 4096 87380 16777216
+   net.ipv4.tcp_wmem = 4096 65536 16777216
+   # Aumentando tamanho de pacotes de backlog e buckets
+   net.core.netdev_max_backlog = 50000
+   net.ipv4.tcp_max_syn_backlog = 30000
+   net.ipv4.tcp_max_tw_buckets = 2000000
+   # Habilitando reuso de sockets TCP
+   net.ipv4.tcp_tw_reuse = 1
+   # Aumentando timeout do TCP para reuso de sockets
+   net.ipv4.tcp_fin_timeout = 10
+   # Destabilitando início lento de em conexões IDLE
+   net.ipv4.tcp_slow_start_after_idle = 0
+   # Aumentando buffer de conexões UDP
+   net.ipv4.udp_rmem_min = 8192
+   net.ipv4.udp_wmem_min = 8192
+   # Desabilitando redirecionamento e roteamento
+   net.ipv4.conf.all.send_redirects = 0
+   net.ipv4.conf.all.accept_redirects = 0
+   net.ipv4.conf.all.accept_source_route = 0
+   # Habilitando log de pacotes
+   net.ipv4.conf.all.log_martians = 1
+   # Aumentando tempo de migração de processos entre cores da cpu e desabilitando auto-agrupamento de processos
+   kernel.sched_migration_cost_ns = 5000000
+   kernel.sched_autogroup_enabled = 0
+   
+#sysctl
+sysctl é usado para modificar os parâmetros de execução do kernelem tempo de execução.Os parâmetros disponiveis para modificações estão disponíveis em /proc/sys/.
+
+Para alterar, abra o arquivo /etc/sysctl.conf, e caso não exista as linhas a seguir, as adicione, senão, as altere.
+
+kernel.shmmax=268435456 #para 32 bits
+kernel.shmmax=1073741824 #para 64 bits
+kernel.msgmni=1024
+fs.file-max=8192
+kernel.sem="250 32000 32 1024"
+1
+2
+3
+4
+5
+kernel.shmmax=268435456 #para 32 bits
+kernel.shmmax=1073741824 #para 64 bits
+kernel.msgmni=1024
+fs.file-max=8192
+kernel.sem="250 32000 32 1024"
+
+#limpar cache
+sudo sync && sudo sysctl -w vm.drop_caches=3 && sudo sysctl -w vm.drop_caches=0
+
+#gestão de memoria
+watch -n 1 free -m
+ou se preferir também pode usar o comando abaixo para realizar a mesma verificação:
+
+watch -n 1 cat /proc/meminfo
+sudo sysctl -w = 3 vm.drop_caches
+sudo sync && sudo sysctl vm.drop_caches=3
+
+#temporarios na memoria ram
+sudo gedit /etc/fstab
+No arquivo que se abrir adicione as seguintes linhas no final:
+
+# Move /tmp to RAM
+
+tmpfs /tmp tmpfs defaults,noexec,nosuid 0 0
+
+#troca temporaria de swap
+nano /proc/sys/vm/swappiness
+
+#troca permanente de swap
+nano /etc/sysctl.conf
+
+# Reduz o uso de SWAP
+vm.swappiness=10
+# Melhora a gestão de cache
+vm.vfs_cache_pressure=50
+
+#swap
+free -m
+swapon -s
+
+### Criando o arquivo
+dd if=/dev/zero of=/root/novo_swap bs=1M count=1024
+
+### Definindo acesso somente para root (segurança)
+chmod 600 /root/novo_swap
+Após criar o arquivo /root/novo_swap, basta formatá-lo com o tipo swap utilizando o comando mkswap:
+
+### Criando o Sistema de Arquivo Swap (formatando)
+mkswap /root/novo_swap
+Tudo pronto para definirmos o novo swap! Com o comando swapon vamos indicar o novo arquivo para incrementar o swap:
+
+swapon /root/novo_swap
+
+Isto mesmo! Se reiniciar o sistema, o novo swap não iniciará automaticamente. Para resolver esse problema, devemos incluir uma entrada para o novo swap no arquivo /etc/fstab. É bem simples!
+
+Basta inserir ao final do arquivo /etc/fstab a seguinte linha:
+
+/root/novo_swap none swap sw 0 0
+Repare que há 6 parâmetros nesta linha inserida. Vou explicá-los:
+
+1. /root/novo_swap corresponde ao dispositivo de bloco (block device) a ser montado;
+2. none indica o ponto de montagem (nesse caso não temos nenhum, pois trata-se de swap);
+3. swap informa o tipo do sistema de arquivo (filesystem type);
+4. sw é a opção para montagem do sistema de arquivo (sw é para o tipo swap);
+5. 0 corresponde se a partição será marcada para fazer dump (swap não tem necessidade, 0 = false);
+6. 0 indica a ordem de checagem na inicialização dos disco (o comando fsck verifica automaticamente, o valor 0 indica que não há necessidade).
+
+apt-get >> history
+
+apt-get install aptitude 
+aptitude install snapd terminator virtualbox rdesktop putty codeblocks vscode testdisk git-core wine winetricks playonlinux 
+programação
+geany vscode pycharm IDLE
+snap install scrcpy
+
+lazer
+cmatrix greed
+
+PostgreeSQL
+
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -       sudo apt-get update
+
+chmod
+
+chown
+
+manipulação de diretorios
+mkdir
+rm -r
+mv
+cp
+DD
+dd if=<destino> of=<para.iso> status=progress
+
+Firewall
+sudo apt-get install gufw
+Após isso, abra o aplicativo e ative o firewall. Pelo terminal, também é bem simples. Basta inserir o comando:
+sudo ufw enable
+
+Rede
+ping
+traceroute
+route
+dig
+ethtool
+ip addr ls
+ifconfig
+mtr
+nslookup
+nmtui-edit
+
+nano /etc/default/keyboard 
+XKBMODEL="pc105"
+XKBLAYOUT="br"
+XKBVARIANT="abnt2"
+XKBOPTIONS=""
+
+apt-get clean
+apt-get update && upgrade -y
+apt-get dist-upgrade
+apt-get autoclean
+apt-get check
+apt autoremove
+apt-cachein search
+apt --fix-broken install
+
+aptitude install <nome>
+aptitude safe-upgrade
+
+.deb
+dpkg -i <file>
+
+.tar
+chmod -x <file>
+tar -xzf <file>
+sh ./<file>
+
+# apt-get --fix-broken install
+# rm /var/lib/apt/lists/* -vf 
+# apt-get update
+# aptitude safe-upgrade
+
+sudo apt-get install -f
+sudo apt-get clean 
+sudo apt-get update
+dpkg --configure -a
+sudo apt-get autoremove
+
+vrms
+
+chmod 744 <arquivo>
+dpkg -i <arquivos .deb>
+
+//Acesso remoto celular
+//ativar modo depuração no celular
+apt-get install adb && apt-get install ffmpeg -y
+adb shell screenrecord --output-format=h264 - | ffplay -
+
+sudo apt-get install winbind
+
+git clone https://github.com/balena-io/etcher.git
+
+verificar
+ligar firewall
+driver da placa de rede wireless
+configurar partiç~oes crypto
+configurar teclado acentuaç~oa
+verificar swap 
+ssh
+vnc
+exibir icones desktop
+dicionario libre
+arquivos .deb
+ssh server
+ssh <user>@<IP>
+acessar um computador da rede
+copy ssh
+
+macchanger
+macchanger <opções> dispositivo
+-s //visualizar o endereço mac
+-e
+-r //configurar um endereço MAC totalmente aleatório
+-A
+-p //resetar o endereço MAC para o valor original 
+
+wifite
+
+aircrack
+-checar redes
+-monitorar clientes
+-derrubar rede
+-escutar a rede
+-capturar handshake
+
+aircrack-ng start wlan1
+airmon-ng start wlan1
+airodump-ng wlan1mon
+airodump-ng --bssid <MAC> -c <channel> wlan1mon
+
+//derruba toda rede
+aireplay-ng --deauth 0 -a <bssid> -e <nome_da_rede> wlan1mon --ignore-negative-one
+
+//derruba disposito
+aireplay-ng --deauth 0 -a <bssid> -c <client_MAC> wlan1mon --ignore-negative-one
+
+//desativar ataque
+airmon-ng stop wlan1mon
+
+//usar handshake
+aircrack-ng handshake.cap -w /path/to/wordlist.txt
+
+airodump-ng --bssid () -c 11 -w (handshake.cap) wlan0mon
+aircrack-ng -w wordlist.txt --bssid <00:00:00:00:00:00> (handshack.cap)
+aireplay-ng -0 1 --ignore-negative-one -a (bssid) -c (station ssid) wlan0mon
+
+fluxion
+
+reaver
+
+juntar arquivos linux
+join -1 1 -2 2 arquivo1 arquivo2 
+ou
+cat 1.txt 2.txt 3.txt 4.txt > 5.txt
+
+chmod
+O primeiro caractere da string indica o tipo de arquivo. Se for "d" representa um diretório, se for "-" equivale a um arquivo.
+d: diretório
+b: arquivo de bloco
+c: arquivo especial de caractere
+p: canal
+s: socket
+-: arquivo normal
+
+É necessário ter um certo cuidado com as permissões. Por exemplo, do que adianta o usuário ter permissão de gravação se ele não tem permissão de leitura habilitada? Ele poderá ler o arquivo para poder modificá-lo? Não! De certo, isso tem utilidade em arquivos de log. 
+
+Fazendo associação com as letras r, w, x e o caractere -, vamos entender cada uma:
+r: significa permissão de leitura (read);
+w: significa permissão de gravação (write);
+x: significa permissão de execução (execution);
+-: significa permissão desabilitada.
+
+Atenção:
+---: nenhuma permissão;
+r--: permissão de leitura;
+r-x: leitura e execução;
+rw-: leitura e gravação;
+rwx: leitura, gravação e execução.
+
+Vamos supor que o arquivo estava assim: 
+
+crwxrwxrwx 1 root disk 37, 128 Dec 11 1995 nht0 
+
+Dessa forma ele está errado. Sua forma correta é: 
+
+crw-r----- 1 root disk 37, 128 Dec 11 1995 nht0 
+
+Usei o comando: 
+
+# chmod 640 nht0 
+
+Alterando as permissões de crwxrwxrwx para crw-r-----. Note que sempre as letras iniciais não mudam, ok? 
+
+O comando chmod -R seta as permissões no diretório e nos arquivos dentro dele, cuidado com isso, foi o que fizeram aqui no meu servidor. 
+
+Use assim: 
+
+$ chmod [número] [nomedoarquivo] 
+
+Exemplo: 
+
+# chmod 755 apache 
+
+Comando	Número	Permissão
+chmod	000	---------
+chmod	400	r--------
+chmod	444	r--r--r--
+chmod	600	rw-------
+chmod	620	-rw--w----
+chmod	640	-rw-r-----
+chmod	644	rw-r--r--
+chmod	645	-rw-r--r-x
+chmod	646	-rw-r--rw-
+chmod	650	-rw-r-x---
+chmod	660	-rw-rw----
+chmod	661	-rw-rw---x
+chmod	662	-rw-rw--w-
+chmod	663	-rw-rw--wx
+chmod	664	-rw-rw-r--
+chmod	666	rw-rw-r--
+chmod	700	rwx------
+chmod	750	rwxr-x---
+chmod	755	rwxr-xr-x
+chmod	777	rwxrwxrwx
+chmod	4711	-rws--x--x
+
+Outro detalhe, os símbolos:
+u: usuário
+g: grupo
+o: outros
+a: totos
+
+Agora dê a permissão para a pasta:
+$ sudo chmod 755 /mnt
+
+Ou se quiser permissões totais à pasta, pode usar:
+# chmod 777 /mnt
+
