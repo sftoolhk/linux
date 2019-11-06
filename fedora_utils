@@ -1,0 +1,514 @@
+dnf install -y
+
+# Habilitar DeltaRPM
+sudo dnf install deltarpm
+sudo nano /etc/dnf/dnf.conf
+
+# E com o arquivo aberto, adicione a linha:
+deltarpm=1 
+
+ou
+
+su -c 'dnf install deltarpm && echo "deltarpm=1" >> /etc/dnf/dnf.conf'
+
+# Desabilitando o SELinux no Fedora e no CentOS
+sestatus
+sudo nano /etc/selinux/config
+
+trocar a opção SELINUX=enforcing para SELINUX=disabled
+
+# Adicionando repositorios RPM Fusion
+# RPM Fusion Free
+rpm -ivh https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-30.noarch.rpm
+
+sudo dnf install http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-28.noarch.rpm
+
+sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-28
+
+# RPM Fusion Non-free
+sudo dnf install http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-28.noarch.rpm
+
+sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-fedora-28
+
+# Atualize o sistema
+sudo dnf update
+sudo dnf upgrade
+
+dnf clean packages
+
+dnf download <nome do pacote>
+dnf repolist
+
+# Atualização de versão
+dnf install dnf-plugin-system-upgrade
+dnf upgrade --refresh 
+dnf system-upgrade download --releasever=31
+dnf system-upgrade reboot
+
+ou
+
+dnf -y --releasever=31 --setopt deltarpm=false distro-sync
+
+# Verificar versão
+cat /etc/*-release
+lsb_release -rs
+
+# Ferramentas de Desenvolvedores
+dnf groupinstall 'Development Tools' && dnf groupinstall 'C Development Tools and Libraries'
+
+# hostnamectl
+sudo hostnamectl set-hostname "nome-do-host"
+
+# bateria
+dnf install powertop
+
+dnf remove laptop-mode-tools
+wget http://repo.linrunner.de/fedora/tlp/repos/releases/tlp-release-1.0-0.noarch.rpm
+yum install tlp tlp-rdw akmod-tp_smapi
+
+Checando o sistema:
+sudo tlp-stat
+
+Checando o estado da bateria:
+sudo tlp-stat -b
+sudo tlp-stat –battery
+
+Checando as configurações:
+tlp-stat -c
+tlp-stat –config
+
+Habilitando/Desabilitando WiFi e Bluetooth
+wifi [ on | off | toggle ]
+bluetooth [ on | off | toggle ]
+
+# yum
+yum localinstall -y *.rpm
+
+# flatpak
+
+# snap
+dnf install -y snapd
+ln -s /var/lib/snapd/snap /snap
+snap install --classic
+
+opera, kdenlive, slack, spotify, discord, chromium, vlc, skype, vscode, uget, flathub, virtualbox
+
+# MySQL
+yum localinstall --nogpgcheck mysql-workbench-community-8.0.18-1.el8.x86_64.rpm 
+
+# conky
+dnf install -y conky
+dnf install -y conky-manager
+
+# Programas importantes
+x3270-text
+rdesktop
+putty
+tig
+wine
+nmap
+virtualbox
+vscode
+codeblocks
+python 3
+software-properties-common
+kodi
+snapd
+terminator
+testdisk
+git-core
+
+fprintd
+fingerprint-gui
+Validity Sensors, Inc. VFS491
+
+# Flatpak
+
+# Editor de registro
+sudo dnf install dconf-editor
+
+# Reiniciar
+systemctl reboot
+
+# Configuração de idioma
+sudo dnf install system-config-language
+system-config-language
+
+# Gnome Tweaks
+sudo dnf install gnome-tweaks
+instalar extensão dash to dock
+
+sudo dnf install papirus-icon-theme
+
+man dnf
+
+# Alternar entre Gnome e Wayland
+
+# Firewall
+sudo systemctl status firewalld.service
+
+# Desabilitar e habilitar firewall
+sudo systemctl stop firewalld.service
+sudo systemctl disable firewalld.service	//desabilita permanentemente
+
+sudo systemctl enable firewalld.service
+
+# Instalação de codecs audio e video
+dnf install -y amrnb
+dnf install -y amrwb
+dnf install -y faad2 
+dnf install -y flac 
+dnf install -y ffmpeg
+dnf install -y gpac-libs 
+dnf install -y lame 
+dnf install -y libfc14audiodecoder 
+dnf install -y mencoder 
+dnf install -y mplayer 
+dnf install -y x264 
+dnf install -y x265 
+dnf install -y gstreamer-plugins-espeak 
+dnf install -y gstreamer-plugins-fc 
+dnf install -y gstreamer-rtsp 
+dnf install -y gstreamer-plugins-good 
+dnf install -y gstreamer-plugins-bad 
+dnf install -y gstreamer-plugins-bad-free-extras 
+dnf install -y gstreamer-plugins-bad-nonfree 
+dnf install -y gstreamer-plugins-ugly 
+dnf install -y gstreamer-ffmpeg 
+dnf install -y gstreamer1-plugins-base 
+dnf install -y gstreamer1-libav 
+dnf install -y gstreamer1-plugins-bad-free-extras 
+dnf install -y gstreamer1-plugins-bad-freeworld 
+dnf install -y gstreamer1-plugins-base-tools 
+dnf install -y gstreamer1-plugins-good-extras 
+dnf install -y gstreamer1-plugins-ugly 
+dnf install -y gstreamer1-plugins-bad-free 
+dnf install -y gstreamer1-plugins-good
+
+# Suporte à reprodução de DVDs criptografados
+sudo rpm --import http://negativo17.org/repos/RPM-GPG-KEY-slaanesh
+sudo dnf config-manager --add-repo=http://negativo17.org/repos/fedora-multimedia.repo
+sudo dnf install libdvdcss
+
+# Instalando o HandBrake (DVD rip)
+sudo dnf install HandBrake
+
+# Players de video
+sudo dnf install -y smplayer
+sudo dnf install -y vlc
+
+# Instalação do Kodi
+sudo dnf install -y kodi
+
+# Instalando o Spotify no Fedora Workstation
+sudo dnf config-manager --add-repo=http://negativo17.org/repos/fedora-spotify.repo
+sudo rpm --import http://negativo17.org/repos/RPM-GPG-KEY-slaanesh
+sudo dnf install spotify-client
+
+# Gnome Tweak
+sudo dnf -y install gnome-tweak-tool dconf-editor
+
+# Compactadores
+sudo dnf -y install unzip p7zip p7zip-plugins unrar
+
+# Docker
+sudo dnf -y install docker docker-compose
+
+# Gimp
+sudo dnf install gimp
+
+# Inkscape
+sudo dnf install inkscape
+
+# Krita
+sudo dnf install krita
+
+# Blender
+sudo dnf install blender
+
+# Audacity
+sudo dnf install audacity
+
+# KDEnlive
+sudo dnf install kdenlive
+
+# Openshot
+sudo dnf install openshot
+
+# uGet
+sudo dnf install uget
+
+# qBittorrent
+sudo dnf install qbittorrent
+
+# Compactadores
+sudo dnf install cabextract lzip p7zip p7zip-plugins unrar
+
+# Dropbox
+sudo dnf install dropbox
+
+# GParted
+sudo dnf install gparted
+
+# Skype
+sudo dnf install https://repo.skype.com/latest/skypeforlinux-64.rpm
+
+# TeamViewer
+sudo dnf install https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm
+
+
+# Configurando placas de video
+# Se você possui uma placa de vídeo onboard da Intel:
+
+sudo dnf install mesa-dri-drivers.i686 mesa-libGL.i686 xorg-x11-drv-intel
+
+# Se você possui uma placa de vídeo offboard da NVIDIA e utiliza o driver de código aberto (Nouveau):
+
+sudo dnf install mesa-dri-drivers.i686 mesa-libGL.i686 xorg-x11-drv-nouveau
+
+# Se você possui uma placa de vídeo offboard da NVIDIA e utiliza o driver proprietário da mesma:
+
+sudo dnf install xorg-x11-drv-nvidia-libs.i686
+
+# Se você possui uma placa de vídeo offboard da AMD:
+
+sudo dnf install mesa-dri-drivers.i686 mesa-libGL.i686 xorg-x11-drv-amdgpu
+
+# [OPCIONAL] Adicione o repositório "negativo17 - Steam":
+
+sudo dnf config-manager --add-repo=http://negativo17.org/repos/fedora-steam.repo
+
+# Steam
+sudo dnf install steam
+
+# Discord
+sudo dnf install discord
+
+# Dolphin emulator
+sudo dnf install dolphin-emu
+
+# MAME - Emulador de Arcade
+sudo dnf install mame
+
+# FCEUX - Emulador de NES/Famicom
+sudo dnf install fceux
+
+# Gens - Emulador de Mega Drive
+sudo dnf install gens
+
+# OpenJDK
+sudo dnf install java-1.9.0-openjdk
+
+# OpenJDK developer
+sudo dnf install java-1.9.0-openjdk-devel
+
+# OracleJDK
+sudo dnf remove icedtea-web
+
+Após baixar o Oracle JDK, abra um terminal e acesse a pasta onde está o mesmo; por exemplo, caso ele esteja na pasta "Downloads", basta digitar:
+
+cd /home/$USER/Downloads
+
+ Em seguida, extraia-o com o comando:
+
+tar xvzf jdk-*.tar.gz
+
+ Renomeie a pasta que resultou da extração para "jdk-oracle" (para facilitar os passos seguintes):
+
+mv jdk*/ jdk-oracle
+
+ Mova a pasta criada para o diretório "/usr/lib":
+
+sudo mv jdk-oracle/ /usr/lib
+
+ Feito isso, informe ao sistema onde o Oracle Java está localizado com os comandos abaixo (um por vez):
+
+sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jdk-oracle/bin/java" 1
+sudo update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/jdk-oracle/bin/javac" 1
+sudo update-alternatives --install "/usr/bin/jar" "jar" "/usr/lib/jdk-oracle/bin/jar" 1
+sudo update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/jdk-oracle/bin/javaws" 1
+
+ E defina-o como padrão executando os comandos (um por vez):
+
+sudo update-alternatives --set java /usr/lib/jdk-oracle/bin/java
+sudo update-alternatives --set javac /usr/lib/jdk-oracle/bin/javac
+sudo update-alternatives --set jar /usr/lib/jdk-oracle/bin/jar
+sudo update-alternatives --set javaws /usr/lib/jdk-oracle/bin/javaws
+
+# Configure o visualizador
+Configure também as variáveis do ambiente (a nível global) editando o arquivo /etc/profile. Para isso, você poderá utilizar qualquer editor de textos "puro" em modo gráfico, como o Gedit, Kwrite e Leafpad, ou pelo terminal, utilizando o Vim ou o nano. Para essa simples edição utilizarei o nano, caso também queira usá-lo, instale-o executando o comando abaixo no terminal:
+
+sudo dnf install nano
+
+ Com o nano instalado, execute:
+
+sudo nano /etc/profile
+
+ Pressione a tecla direcional para baixo para chegar ao FINAL DO ARQUIVO e em seguida, adicione o conteúdo abaixo no mesmo:
+
+JAVA_HOME=/usr/lib/jdk-oracle
+PATH=$PATH:$HOME/bin:$JAVA_HOME/bin
+export JAVA_HOME
+export PATH
+
+su -c 'source /etc/profile'
+
+ Para que as alterações tenham efeito imediatamente ou se preferir, reinicie o sistema
+
+# Adobe Flash Player
+sudo dnf install http://linuxdownload.adobe.com/adobe-release/adobe-release-x86_64-1.0-1.noarch.rpm
+
+ Após, importe a chave de assinatura do repositório:
+
+sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-adobe-linux
+
+ E instale o Adobe Flash Player com o comando:
+
+  Para o Mozilla Firefox:
+
+sudo dnf install flash-plugin
+
+
+  Para o Chromium, Opera e Vivaldi:
+
+sudo dnf install flash-player-ppapi
+
+# Google Chrome
+sudo dnf install https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+
+# Chromium
+sudo dnf install chromium
+
+# Opera
+snap install opera
+
+ Após a conclusão, importe a chave de assinatura do repositório com o comando:
+
+sudo rpm --import https://rpm.opera.com/rpmrepo.key
+
+ Copie e cole todo o conteúdo abaixo no terminal e pressione Enter em seguida para adicionar o repositório no sistema:
+
+sudo tee /etc/yum.repos.d/opera.repo <<RPMREPO
+[opera]
+name=Opera packages
+type=rpm-md
+baseurl=https://rpm.opera.com/rpm
+gpgcheck=1
+gpgkey=https://rpm.opera.com/rpmrepo.key
+enabled=1
+RPMREPO
+
+ Atualize a lista de repositórios:
+
+sudo dnf update
+
+ E execute um dos comandos abaixo para instalar a sua versão preferida do Opera:
+
+  Para instalar o Opera Stable:
+
+sudo dnf install opera-stable
+
+# VirtualBox
+sudo dnf install virtualbox
+
+# Virtual Machine Manager
+sudo dnf install virt-manager qemu-kvm qemu-img libvirt-daemon libvirt-daemon-driver*
+
+sudo systemctl start libvirtd
+
+# Fedy (gerenciador de pacotes)
+sudo dnf install https://dl.folkswithhats.org/fedora/$(rpm -E %fedora)/RPMS/fedy-release.rpm	
+sudo dnf install fedy
+
+# dnfdragora
+sudo dnf install dnfdragora-gui
+
+# Telegram
+Após, abra um terminal e acesse a pasta onde baixou o arquivo, por exemplo a pasta "Downloads":
+
+cd /home/$USER/Downloads
+
+# Descompacte o pacote e mova os arquivos para a sua pasta de usuário com:
+
+tar -xJvf tsetup*.tar.xz && mv Telegram .TelegramDesktop && mv .TelegramDesktop /home/$USER
+
+# Em seguida, crie um link simbólico do Telegram no sistema:
+
+sudo ln -s /home/$USER/.TelegramDesktop/Telegram /usr/bin/telegram
+
+# E também um lançador para o mesmo, copie e cole todo o conteúdo abaixo no terminal e em seguida tecle "Enter":
+
+tee /home/$USER/.local/share/applications/telegram-desktop.desktop <<EOT
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Name=Telegram Desktop
+Comment=Official desktop version of Telegram messaging app
+Exec=telegram
+Icon=telegram
+Terminal=false
+StartupWMClass=Telegram
+Type=Application
+Categories=Network;
+MimeType=x-scheme-handler/tg;
+X-Desktop-File-Install-Version=0.22
+EOT
+
+# Feito isso, procure pelo atalho do Telegram Desktop no seu menu de aplicativos ou abra-o pelo terminal digitando:
+
+telegram
+
+# Android Studio
+sudo dnf install bzip2-libs.i686 compat-libstdc++-296.i686 compat-libstdc++-33.i686 compat-libstdc++-33.x86_64 glibc-devel.i686 glibc.i686 libgcc.i686 libstdc++.i686 libX11-devel.i686 libXrender.i686 libXrandr.i686 ncurses-libs.i686 zlib.i686
+
+sudo dnf install @virtualization
+
+# NetBeans
+
+# Configurando placas de videos
+# abra um terminal e execute o comando abaixo para identificá-la
+
+/sbin/lspci | grep -e VGA
+
+# A saída será semelhante a esta abaixo:
+
+##### EXEMPLO #####
+01:00.0 VGA compatible controller: NVIDIA Corporation GP106 [GeForce GTX 1060 3GB] (rev a1)
+
+# Feito isso, execute um dos comandos abaixo para instalar o driver correto para a sua placa de vídeo, de acordo com o modelo e/ou ano de fabricação da mesma (verifique aqui):
+
+# Para placas GeForce, Quadro ou Tesla fabricadas de 2010 até hoje:
+sudo dnf install xorg-x11-drv-nvidia akmod-nvidia
+
+[OPCIONAL] Suporte à tecnologia CUDA:
+
+sudo dnf install xorg-x11-drv-nvidia-cuda
+
+# Para placas GeForce das séries 8 (8xxx), 9 (9xxx) e 200:
+sudo dnf install xorg-x11-drv-nvidia-340xx akmod-nvidia-340xx
+
+[OPCIONAL] Suporte à tecnologia CUDA:
+
+sudo dnf install xorg-x11-drv-nvidia-340xx-cuda
+
+# Interfaces graficas
+  Awesome
+sudo dnf install awesome
+
+  Xfce Desktop
+sudo dnf groupinstall xfce-desktop
+
+  KDE Plasma Desktop
+sudo dnf groupinstall kde-desktop
+
+  Cinnamon Desktop
+sudo dnf groupinstall cinnamon-desktop
+
+  MATE-Compiz Desktop
+sudo dnf groupinstall mate-desktop
+
+  LXQt Desktop
+sudo dnf groupinstall lxqt-desktop
+
+  LXDE Desktop
+sudo dnf groupinstall lxde-desktop
