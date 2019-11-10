@@ -53,6 +53,16 @@ dnf -y --releasever=31 --setopt deltarpm=false distro-sync
 cat /etc/*-release
 lsb_release -rs
 
+#Limpar kernels antigos
+uname -sr
+rpm -q kernel
+yum remove kernel-5.3.7-200.fc30.x86_64 
+
+package-cleanup --oldkernels --count=2
+dnf remove $(dnf repoquery --installonly --latest-limit 2 -q) 
+
+grub2-mkconfig -o /boot/grub2/grub.cfg
+
 # Ferramentas de Desenvolvedores
 dnf groupinstall 'Development Tools' && dnf groupinstall 'C Development Tools and Libraries'
 
@@ -82,16 +92,58 @@ wifi [ on | off | toggle ]
 bluetooth [ on | off | toggle ]
 
 # yum
+yum install -y <software>
+yum info <software>
 yum localinstall -y *.rpm
+yum repolist all
 
 # flatpak
+dnf install -y flatpak
 
 # snap
 dnf install -y snapd
 ln -s /var/lib/snapd/snap /snap
 snap install --classic
 
-opera, kdenlive, slack, spotify, discord, chromium, vlc, skype, vscode, uget, flathub, virtualbox
+htop, opera, kdenlive, slack, spotify, discord, chromium, vlc, skype, vscode, uget, flathub, virtualbox, tor, vuze, pidgin, vocal, okular, obturador, neofetch, wireshark, unrar, nmap
+Fedy, opencomic, nootka
+redshift, win7 volume mixer, event calendar, kde connect, build-essential, 
+
+# subscription-manager 
+subscription-manager status
+subscription-manager register
+subscription-manager attach
+subscription-manager repos --disable='*' --enable -
+subscription-manager repos --list
+
+# plank
+> colocar na inicialização
+plank --preference
+/home/sftool/.config/plank/theme/
+
+# ksmoothdock
+> dependências
+extra-cmake-modules 
+qt5
+qtbase5-dev 
+libkf5activities-dev 
+libkf5config-dev 
+libkf5coreaddons-dev 
+libkf5dbusaddons-dev 
+libkf5i18n-dev 
+libkf5iconthemes-dev 
+libkf5xmlgui-dev 
+libkf5widgetsaddons-dev 
+libkf5windowsystem-dev
+
+git clone https://github.com/dangvd/ksmoothdock.git
+cd ksmoothdock/
+cmake src
+make -j4
+sudo make install
+
+# configurando GRUB
+wget -O - https://github.com/shvchk/fallout-grub-theme/raw/master/install.sh | bash
 
 # MySQL
 yum localinstall --nogpgcheck mysql-workbench-community-8.0.18-1.el8.x86_64.rpm 
@@ -240,6 +292,8 @@ sudo dnf install uget
 
 # qBittorrent
 sudo dnf install qbittorrent
+
+#TorrentProxy
 
 # Compactadores
 sudo dnf install cabextract lzip p7zip p7zip-plugins unrar
@@ -408,6 +462,9 @@ sudo dnf update
 
 sudo dnf install opera-stable
 
+# Extensões Opera
+
+
 # VirtualBox
 sudo dnf install virtualbox
 
@@ -491,6 +548,11 @@ sudo dnf install xorg-x11-drv-nvidia-340xx akmod-nvidia-340xx
 
 sudo dnf install xorg-x11-drv-nvidia-340xx-cuda
 
+#tar
+compactar uma pasta
+tar -zcvf <nome da pastas>.tar.gz <nome da pasta>
+
+
 # Interfaces graficas
   Awesome
 sudo dnf install awesome
@@ -512,3 +574,52 @@ sudo dnf groupinstall lxqt-desktop
 
   LXDE Desktop
 sudo dnf groupinstall lxde-desktop
+
+# Alguns comandos importantes
+ls /
+ls -all
+ls -l
+ls -ld
+ps -ef
+file <arquivo>
+mkdir
+cp <origem> .
+cp <origem> <destino>
+rm
+rmdir
+ln
+ln -s
+pwd
+whereis
+useradd
+id <user>
+usermod -aG <grupo> <user>
+groups <user>
+groupadd
+passwd <user>
+touch
+grep
+chmod
+chmod o+w <file>
+chmod u-rwx <file>
+chown <group>:<user> /<file>
+sudo -u cockpit-ws 
+whoami
+su -
+logout
+
+# Permissões
+r       #read
+w       #write
+x       #execute
+
+- UUU GGG OOO       # user group other
+
+vim #vimtutor
+  esc
+  yy    #copy
+  p     #paste
+  dd    #delete
+  w 
+  :write foo
+  :q!
