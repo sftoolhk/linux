@@ -1,1 +1,218 @@
+//equo Sabayon ou emerge Gentoo
+//Configure os arquivos
+“/etc/hostname”
+“/etc/hosts”
 
+A atualização é feita com o comando
+# emerge --update world --deep
+Depois de finalizar a atualização é importante executar dois comandos, 
+
+# revdep-rebuild
+# etc-update
+# equo update ; upgrade
+# equo conf update
+# equo sec oscheck update info list install
+# emerge --update --newuse --deep @world
+# equo rm portage-config-protect-if-modified PYTHON_TARGETS-deployment portage-preserve-libs-default emerge-language initramfs-required gcc48_ssp gcc_4_7_introduced_new_c++11_abi udev-upgrade cpu_flags_x86-introduction portage-sync-changes true-multilib udev-init-scripts-changes python-targets openssh-weak-keys openrc-0-18-localmount-and-netmount-changes
+
+# emerge --sync
+# emerge --update --ask @world
+# emerge --update --deep @world
+# emerge --update --deep --with-bdeps=y @world
+# emerge --update --deep --with-bdeps=y --newuse @world
+ 
+# equo repo enable sabayon-weekly
+# equo update && equo world --ask
+# equo install linux-sabayon
+# equo i entropy sulfur
+
+//Instale seus aplicativos favoritos, no meu caso:
+# su
+# equo i linux-sabayon wine midori seamonkey chromium spotify tor vlc skype audacity kvm opera zoneminder virtualbox-bin virtualbox-modules 
+steam-meta portage verynice deluge firefox firejail firetools konqueror kiwi playonlinux
+# equo u ; equo i glibc
+
+//Verificação completa do sistema:
+# equo u ; equo lt ; equo dt ; equo cache ; equo cleanup ; equo u ; equo conf ; equo config ; equo fetch ; equo m ; 
+equo up ; equo u ; equo rescue ; equo sec ; equo status ; equo ugc ; equo up && equo u ; equo i hardinfo sysbench
+
+//Atualizando repositórios
+# equo update
+//force
+# equo update --force
+
+//Otimizando mirrors
+# equo repo mirrorsort sabayonlinux.org
+
+//Atualizando entropy
+# equo install sys-apps/entropy rigo equo  --relaxed
+# equo conf update
+
+//Primeira serie de comandos no Terminal
+# equo u ; equo i boost boost-build boost-thread boost-program-options boost-headers boost-python
+# eselect-boost eselect boost set 1 env-update 
+# equo rm –nodeps firefox emerge –sync LINGUAS=”pt_BR” 
+# emerge -av firefox 
+# equo i verynice verynice default preload preload default 
+# equo u ; equo lt ; equo u ; equo dt ; equo cache ; equo cleanup ; equo u ; equo conf ; equo config ; equo fetch ; equo m ; equo up ; equo u ; equo rescue ; equo sec ; equo status ; equo ugc ; 
+# equo up && equo u ; equo i hardinfo sysbench
+
+//Verificar versão do sistema
+# uname -r
+
+//Melhorar desempenho
+# equo up
+# equo i boost boost-build boost-thread boost-program-options boost-headers boost-python eselect-boost
+# eselect boost set 1
+# env-update
+$ source /etc/profile
+
+//Sequencia decomandos para ficar tudo ok
+# su
+# senha:
+# equo up ; equo u ; equo lt ; equo dt ; equo cache ; equo cleanup ; equo conf ; equo fetch
+# equo update --force
+# equo conf update
+# eselect kernel list
+# equo install sys-apps/entropy equo  --relaxed
+# equo install sys-apps/entropy equo rigo
+# eselect opengl list
+# equo search nvidia
+# gcc-config --
+# gcc-config -l
+# binutils-config -l
+# eselect python list
+RESTART
+# su
+# equo deptest --ask
+# equo libtest --ask
+# emerge -sync
+# emerge -uD world
+
+# equo up ; equo u ; equo lt ; equo dt ; equo cache ; equo cleanup
+# equo conf update
+
+//Talvez
+htop hardinfo fireftp molecule gucharmap marble pycrust homebank granule python3.5 simplescreenrecorder
+gedit xl-wallpaper-config weather chatzilla devede audacious blender gimp clementine 
+conky xsane konqueror okular curl electrum conky bleachbit
+
+//Pacote Para assistir videos on line Popcorn-Time
+//Instalar o popcorn no sabayon
+//64 Bit
+//Link:
+https://popcorntime.sh/download/build/Popcorn-Time-0.3.9-Linux-64.tar.xz
+
+# wget https://popcorntime.sh/download/build/Popcorn-Time-0.3.9-Linux-64.tar.xz
+tar -xz Popcorn-Time-0.3.9-Linux-64.tar.xz
+cd Popcorn-Time/
+chmod 755 Popcorn-Time
+./Popcorn-Time
+
+–>Instalando o Conky Manager
+Pré-requisitos.
+primeiro instalar valac:
+
+# elatov@gen:~$e-file valac
+
+[I] dev-lang/vala
+Available Versions: 0.8.1-r0 0.8.1 0.8.0-r0 0.7.10-r0 0.7.9-r0 0.7.8-r0 9999-r0 0.7.7-r0 0.7.5-r0 0.7.4-r0 0.6.1-r0 0.7.10 0.9.8 0.9.5 0.9.3
+Last Installed Ver: 0.24.0-r1(Thu 11 Dec 2014 10:40:47 PM MST)
+Homepage: https://wiki.gnome.org/Vala
+Description: Compiler for the GObject type system
+Matched Files: /usr/bin/valac;
+Depois:
+
+# sudo emerge -av vala
+# sudo ln -s /usr/bin/valac-0.24 /usr/bin/valac
+# elatov@gen:~$e-file gee-0.8.pc
+
+[I] dev-libs/libgee
+Available Versions: 0.10.3 0.16.1 0.18.0
+Last Installed Ver: 0.6.8(Sat 21 Feb 2015 01:55:23 PM MST)
+Homepage: https://live.gnome.org/Libgee
+Description: GObject-based interfaces and classes for commonly used data structures
+Matched Files: /usr/lib64/pkgconfig/gee-0.8.pc; /usr/lib/pkgconfig/gee-0.8.pc;
+
+# elatov@gen:~eix libgee
+[I] dev-libs/libgee
+Available versions:
+(0) 0.6.7 0.6.8
+(0.8) 0.14.0 0.16.1(0.8/2) 0.18.0(0.8/2)
+{+introspection}
+Installed versions: 0.18.0(0.8)(11:57:50 AM 11/28/2015)(introspection)
+Homepage: https://wiki.gnome.org/Projects/Libgee
+Description: GObject-based interfaces and classes for commonly used data structures
+
+# sudo emerge -av libgee
+# elatov@gen:~$equery l gtk+:3
+
+* Searching for gtk+:3 …
+[IP-] [ ] x11-libs/gtk+-3.16.7:3
+
+$ cat /etc/portage/package.use/bzr
+dev-vcs/bzr curl
+
+$ bzr branch lp:conky-manager
+You have not informed bzr of your Launchpad ID, and you must do this to
+write to Launchpad or access private data. See “bzr help launchpad-login”.
+Branched 136 revisions.
+
+Agora vamos construir o programa:
+$ cd conky-manager
+$ make
+# – prefix=/usr
+# + prefix=/usr/local/conky-manager
+$ sudo mkdir /usr/local/conky-manager
+$ sudo chown elatov:elatov /usr/local/conky-manager
+$ make install
+$ sudo emerge -av p7zip
+$ equery u imagemagick | grep ‘\+’+X +bzip2 +cxx +jpeg +openmp +truetype +zlib
+ 
+Agora inicie o Conky Manager
+
+$ /usr/local/conky-manager/bin/conky-manager
+
+Ou usarei o Rigo Application Browser, para remover tudo que for KDE e XFCE4.
+O Rigo Application Browser, parece ser uma variante do Synapse.
+ 
+Pelo Terminal seria assim:
+
+# equo rm kde* ; equo rm xfce*
+ 
+O asterisco, significa:
+
+“Sistema, remova tudo que for KDE e, sistema remova tudo que for XFCE4, pois meu sistema é LXQT.”
+
+Quando você usar, um novo sistema Sabayon em fase de lançamento, não pode mecher muito.
+Deve-se evitar instalar pacotes que, não estejam no repositório Sabayon deste novo sistema.
+ 
+–>RIGO APPLICATION BROWSER
+
+Com o Rigo Application Browser, você instala e desinstala pacotes do sistema de modo gráfico. É mais fácil, mas, para quem tem conecções baixas, talvez fique um pouco lento. Mas vale a pena. O Sabayon é genial.
+Existem muito mais coisas a saber sobre o Sabayon, mas issto, acredito que é mais do que suficiente. Ufa!
+Você não sabe o trabalho que me deu escrever este artigo.
+
+//ffmpeg junto de libav
+//Descarte pacotes inuteis
+
+Comando que coloca TODOS os aplicativos compatíveis na SANDBOX firejail:
+
+$ mkdir -p ~/.local/share/applications; for profile in $(basename -s .profile /etc/firejail/*.profile) ;
+do if [[ -f /usr/share/applications/$profile.desktop ]]; then sed -r ‘s/^(Exec=)/\1firejail /’ 
+/usr/share/applications/$profile.desktop > ~/.local/share/applications/$profile.desktop;
+echo $profile configured to run in firejail; fi; done
+
+//Upgrade total do sistema
+# equo update
+# equo upgrade --ask
+# equo conf update
+
+//Analisando dependências
+# equo deptest
+# equo libtest
+
+//Previsão do tempo
+# curl wttr.in
+//Pesquisar cidade especifica
+# curl wttr.in/”Itu”
