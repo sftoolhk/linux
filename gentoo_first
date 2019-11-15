@@ -1,0 +1,152 @@
+//Baixe Tudo
+https://www.gentoo.org/downloads/
+
+Minimal
+Live
+Stage 3
+//Olhar arquivos adicionais
+...
+
+//Verificar hash dos arquivos
+diff
+
+//Gravar liveDVD e dar boot
+ls
+ls /mnt/gentoo
+ifconfig
+ping www.terminalroot.com.br
+
+//Configurar partições
+fdisk -l
+fdisk /dev/sda
+//Para criar nova partição
+n
+partition number 1
+first sector 2048
+last sector +128
+n
+partition number 2
+first sector 
+last sector +512
+n
+partition number 3
+first sector ate o fim
+//configurando swap
+t
+2
+//para ver opções
+L
+49 //para swap Solaris
+q
+
+//Formatar partições
+mkfs.ext4 /dev/sda1
+mkfs.ext4 /dev/sda3
+mkswap /dev/sda2
+swapon /dev/sda2
+//Verificar data
+date
+date MMDDAAAA
+
+ls
+mkdir /mnt/gentoo/boot
+mount /dev/
+mount -t ext4 /dev/sda1 /mnt/gentoo/boot
+
+mount /dev/sda1 /mnt/gentoo/boot/
+cd /mnt/gentoo
+
+//copiar Stage 3
+lsusb
+como copiar do USB para a pasta?
+
+ping 192.168.1.1
+//Fazer download do site do gentoo, olhar documentação do arquivo e hash
+entrar na pasta onde vai entrar no arquivo
+wget http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64/stage3-amd64-20180206T214502Z.tar.xz
+//no caso de rede
+wget http://192.168.1.2/stage3.tar.bz2 
+pwd
+cd /mnt/gentoo
+//Descompacte o gentoo na pasta
+tar -Jxvf stage3-amd64-2018.xz --xattrs --numeric-owner
+ls
+
+//Clonar partições
+mirrorselect -i -o >> /mnt/gentoo/etc/portage/make.conf
+//Selecionar o espelho
+//Pegar os proximos ao seu pais
+mkdir /mnt/gentoo/etc/portage/repos.conf
+cp /mnt/gentoo/usr/share/portage/config/repos.conf /mnt/gentoo/etc/portage/repos.conf/gentoo.conf/
+cp -L /etc/resolv.conf /mnt/gentoo/etc/
+mount -t proc /proc/ /mnt/gentoo/proc/
+mount --rbind /sys/ /mnt/gentoo/sys/
+mount --rbind /dev/ /mnt/gentoo/dev/
+mount  --make-rslave /dev/
+mount --make-rslave /sys/
+ls
+//Mudar diretorio root
+chroot /mnt/gentoo/ /bin/bash
+cd /mnt/gentoo
+source /etc/profile
+export
+export PS1="(chroot) $PS1"
+//acesse a past /mnt/gentoo
+mount /dev/sda1 /boot/
+//Sinconizr Portage e emerge
+emerge --sync
+emerge --oneshot portage
+//Agora demora
+eselect news read
+ctrl+R --deep --new
+eselect profile list
+eselect profile set 12 //o azul
+//...demora mais
+emerge -ask --update --deep --newuse @world
+ctrl+R
+emerge --info
+emerge -info | grep --USE
+//caso não queira algum pacote coloque um traço na frente
+nano /etc/portage/ make.conf
+ls / usr/share/zoneinfo/Brazil 
+echo "Brazil/East" > /etc/timezone
+cat /etc/timezone
+emerge --config sys-libs/timezone-data
+nano -w /etc/locale.g
+pt_br UTF-8
+ctrl+o
+ctrl+x
+locale-gen
+locale -a
+eselect locale list
+eselect locale set 586  //ptbr utf8
+env-update 
+env-update && source /etc/profile && export PS1="(chroot) $PS1"
+ls /usr/src/
+emerge --ask sys-kernel/gentoo-sources
+Y
+//instalando kernel
+cd /usr/src/
+wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.9.28.tar.xz
+tar -Jxvf linux-*.tar.xz
+ln -s linux-*/ linux
+emerge --ask sys-kernel/genkernel
+genkernel all
+//kernel instal
+nano /etc/conf.d
+hostname="sftoolhk"
+nano /etc/conf.d/net
+dns_domain_lo="gentoolinux"
+criando uma senha de root
+//instalando o grub
+passwd
+emerge -ask --verbose sys-boot/grub:2
+grub -install /dev/sda
+grub-mkconfig -o /boot/grub.cfg
+reboot
+root
+password
+ls
+adduser sftool
+ping www.terminalroot.com.br
+ifconfig
