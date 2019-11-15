@@ -1,0 +1,157 @@
+1. Configurar /etc/samba/smb.conf 
+
+    Ping domain.tld  ( specianly with a Samba 4 ADDC domain )
+    Ping server.domain.tld
+    Ping client.domain.tld
+    Ping client
+    Ping server
+    
+Configurar /etc/resolf.conf
+    domain RDC2A3.SAMBA
+    search RDC2A3.SAMBA
+    nameserver 192.168.0.254
+    nameserver 192.168.1.9
+    
+2. Instalar
+    samba  samba-tool
+  
+3. Verificar erros
+    testparm
+    
+4. Cadastrar usuario root
+    smbpasswd -a root
+    
+5. Criar conta de usuario e cadastrar no samba
+    useradd -m -s /bin/false user
+    smbpasswd -a user
+    
+6. Criar conta da maquina e cadastrar no Samba
+    useradd -d /dev/null -M -s /bin/false w8$
+    smbpasswd -a -m w8
+    
+7. Adicionar seção netlogon
+    vi /etc/samba/smb.conf
+    
+[global]
+    loogon script = netlogon.bat
+    
+[netlogon]
+    path = /var/samba/netlogon
+    browseable = no
+    
+8. Criar o diretorio netlogon e configurar a permissão
+    mkdir -p /var/samba/netlogon
+    chmod 775 /var/samba/netlogon
+    
+9. Criar arquivo netlogon.bat e adicionar o script
+    vi /var/samba/netlogon/netlogon.bat
+    net user h: /HOME
+    
+10. Adicionar seção profiles
+    vi /etc/samba/smb.conf
+
+[global]
+    logon path = \\%L\profiles\%U
+
+[profiles]
+    path = /var/profile
+    read only = no
+    browseable = no
+    
+11. Criar o diretorio e configurar permissão
+    mkdir /var/profile
+    chmod 777 /var/profile
+
+12. Alterar contexto de segurança do diretorio /var/profile
+    chcon -R -t samba_share_t /var/profile
+    
+13. Reiniciar samba
+    service smb restart
+    service nmb restart
+    
+
+
+
+    
+    
+    
+    
+    
+  
+  
+
+vi /etc/hosts
+vi /etc/named.conf
+
+cd /var/named
+vi
+    
+    
+    
+    
+    
+[global]
+     ...
+     admin users = gleydson
+     ou
+     domain admin group = @admins gleydson
+     
+Scripts de logon
+    [global]
+        domain logons = yes
+        logon script = logon.cmd
+
+     [netlogon]
+         path = /pub/samba/netlogon
+         read only = yes
+         write list = ntadmin
+     
+Adicionar maquina automaticamente
+    add user script = useradd -g domainmac -c "Maquina de Dominio" -s /bin/false -d /dev/null %u
+
+Teste
+    smbclient -L 192.168.1.9 -U%
+
+Identificação da máquina e domínio
+     netbios name = gleydson
+     workgroup = focalinux
+
+níveis de acesso e funções do servidor
+     security = user
+     domain master = yes
+     prefered master = yes
+     local master = yes
+
+senhas criptografadas
+     encrypt passwords = yes
+     smb passwd file = /etc/samba/smbpasswd.db
+     
+Crie uma conta de máquina no arquivo /etc/passwd:
+     useradd -g domainmac -c "Maquina de Dominio" -s /bin/false -d /dev/null master$
+     
+Crie uma conta de máquina no arquivo /etc/samba/smbpasswd:
+     smbpasswd -m -a master
+     
+Perfis de usuario
+[global]
+     security = user
+     encrypt passwords = yes
+     domain logons = yes
+     logon drive = H:
+     logon path = \\%N\profilesNT\%u
+     logon home  = \\%N\profiles\%u
+     preserve case = yes
+     short preserve case = yes
+     case sensitive = no
+
+     [profiles]
+         path = /pub/profiles
+         read only = no
+         create mask = 0600
+         directory mask = 0700
+
+     [profilesNT]
+         path = /pub/profilesNT
+         read only = no
+         create mask = 0600
+         directory mask = 0700
